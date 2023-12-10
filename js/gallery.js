@@ -64,16 +64,49 @@ const images = [
     },
   ];
 
-  const container = images.map((image) => 
-  `<li class="gallery-item">
-  <a class="gallery-link" href="large-image.jpg">
-    <img
-      class="gallery-image"
-      src="small-image.jpg"
-      data-source="large-image.jpg"
-      alt="Image description"
-    />
-  </a>
-</li>`
-  
+
+const container = images
+  .map(
+    (image) =>
+      `<li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+          <img
+            class="gallery-image"
+            src="${image.preview}"
+            data-source="${image.original}"
+            alt="${image.description}"
+          />
+        </a>
+      </li>`
   )
+  .join("");
+
+    
+const gallery = document.querySelector('.gallery');
+gallery.innerHTML = container;
+
+gallery.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const clickImg = event.target.dataset.source;
+  if (clickImg) {
+    console.log(clickImg);
+    const modalContent = `<img width="1400" height="900" src="${clickImg}">`;
+    const modal = basicLightbox.create(modalContent, {
+      onClose: (instance) => {
+        instance.element().remove();
+      },
+    });
+
+    modal.show();
+
+    function onKey(event) {
+      if (event.code === "Escape") {
+        modal.close();
+        document.removeEventListener("keydown", onKey);
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+  }
+});

@@ -64,7 +64,6 @@ const images = [
     },
   ];
 
-
 const container = images
   .map(
     (image) =>
@@ -80,7 +79,6 @@ const container = images
       </li>`
   )
   .join("");
-
     
 const gallery = document.querySelector('.gallery');
 gallery.innerHTML = container;
@@ -106,7 +104,6 @@ gallery.addEventListener('click', (event) => {
         document.removeEventListener("keydown", onKey);
       }
     }
-
     document.addEventListener("keydown", onKey);
   }
 });

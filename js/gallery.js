@@ -80,8 +80,12 @@ const container = images
   )
   .join("");
     
+
+
 const gallery = document.querySelector('.gallery');
 gallery.innerHTML = container;
+
+let modal;
 
 gallery.addEventListener('click', (event) => {
   event.preventDefault();
@@ -89,21 +93,22 @@ gallery.addEventListener('click', (event) => {
   const clickImg = event.target.dataset.source;
   if (clickImg) {
     console.log(clickImg);
-    const modalContent = `<img width="1400" height="900" src="${clickImg}">`;
-    const modal = basicLightbox.create(modalContent, {
+    const modalContent = `<img width="1280" height="853" src="${clickImg}">`;
+    modal = basicLightbox.create(modalContent, {
+      onShow: (instance) => {
+        document.addEventListener("keydown", onKey);
+      },
       onClose: (instance) => {
-        instance.element().remove();
+        document.removeEventListener("keydown", onKey);
       },
     });
 
     modal.show();
-
-    function onKey(event) {
-      if (event.code === "Escape") {
-        modal.close();
-        document.removeEventListener("keydown", onKey);
-      }
-    }
-    document.addEventListener("keydown", onKey);
   }
 });
+
+function onKey(event) {
+  if (event.code === "Escape") {
+    modal.close();
+  }
+}
